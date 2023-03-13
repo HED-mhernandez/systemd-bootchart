@@ -14,7 +14,7 @@ Documentation=man:systemd-bootchart.service(1) man:bootchart.conf(5)
 DefaultDependencies=no
 
 [Service]
-ExecStart=@rootlibexecdir@/systemd-bootchart -r
+ExecStart=@rootlibexecdir@/systemd-bootchart -r --control-group --output /home/root
 
 [Install]
 WantedBy=sysinit.target

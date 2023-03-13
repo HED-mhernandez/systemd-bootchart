@@ -32,6 +32,7 @@
  ***/
 
 #include <dirent.h>
+#include <math.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
@@ -482,10 +483,18 @@ int main(int argc, char *argv[]) {
 
         if (!of) {
                 t = time(NULL);
+                time_t now;
+                struct tm *tm;
+
+                now = time(0);
+                if ((tm = localtime (&now)) == NULL) {
+                        printf ("Error extracting time stuff\n");
+                        return 1;
+                }
                 r = strftime(datestr, sizeof(datestr), "%Y%m%d-%H%M", localtime(&t));
                 assert_se(r > 0);
 
-                snprintf(output_file, PATH_MAX, "%s/bootchart-%s.svg", arg_output_path, datestr);
+                snprintf(output_file, PATH_MAX, "%s/bootchart-%s-%d.svg", arg_output_path, datestr, tm->tm_sec);
                 of = fopen(output_file, "we");
         }
 
